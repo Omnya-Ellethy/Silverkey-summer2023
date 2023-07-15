@@ -8,7 +8,7 @@ namespace CookieBasedAuth.Pages;
 public class IndexModel : PageModel
 {
     [BindProperty]
-    public LoginInputs LoginInputs { get; set; }
+    public LoginInputs? LoginInputs { get; set; }
 
     public IndexModel()
     {
@@ -20,8 +20,8 @@ public class IndexModel : PageModel
     }
     public async Task<IActionResult> OnPost()
     {
-        string username = LoginInputs.Username;
-        string password = LoginInputs.Password;
+        string? username = LoginInputs?.Username;
+        string? password = LoginInputs?.Password;
         if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
         {
             ModelState.AddModelError("LoginError", "Enter Username and password");

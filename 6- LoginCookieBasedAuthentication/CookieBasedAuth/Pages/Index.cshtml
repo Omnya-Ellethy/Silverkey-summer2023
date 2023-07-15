@@ -60,7 +60,7 @@
 </style>
 
 
-    @if (User.Identity.IsAuthenticated)
+    @if (User?.Identity?.IsAuthenticated == true)
     {
         <h1>You are logged in</h1>
         <div class="form-group">

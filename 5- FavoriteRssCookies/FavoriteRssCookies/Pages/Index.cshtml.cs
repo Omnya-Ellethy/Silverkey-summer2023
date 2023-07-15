@@ -35,6 +35,9 @@ public class IndexModel : PageModel
         TotalPages = (int)Math.Ceiling((double)TotalItems / PageSize);
         CurrentPage = PageNumber;
 
+        var starredFeedsJson = JsonSerializer.Serialize(ContentCollection);
+        _cache.Set("starredFeeds", starredFeedsJson);
+
         ContentCollection = ContentCollection
             .Skip((PageNumber - 1) * PageSize)
             .Take(PageSize)

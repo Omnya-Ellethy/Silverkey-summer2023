@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Current Time Service</title>
+    <script src="https://unpkg.com/htmx.org@latest"></script>
+  </head>
+  <body>
+    <h1>Current Time is</h1>
+    <h2 hx-get="/CurrentTime" hx-swap="innerHTML" hx-trigger="load"></h2>
+
+    <!-- <h2 id="current-time"> </h2>
+    <button hx-get="/CurrentTime" hx-swap="innerHTML" hx-target="#current-time">Get Current Time</button> -->
+  </body>
+</html>
+

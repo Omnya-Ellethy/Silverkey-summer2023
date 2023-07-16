@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "Hash": "p61H/bFfJ0OH7Ay9wlcWk7QzqNX6qxY3C8H+3qVC99U=",
+  "Source": "CurrentTimeService",
+  "BasePath": "_content/CurrentTimeService",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "CurrentTimeService\\wwwroot",
+      "Source": "CurrentTimeService",
+      "ContentRoot": "C:\\D\\SliverKey\\Assignments\\7- Currenttimeservice\\CurrentTimeService\\wwwroot\\",
+      "BasePath": "_content/CurrentTimeService",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\D\\SliverKey\\Assignments\\7- Currenttimeservice\\CurrentTimeService\\wwwroot\\index.html",
+      "SourceId": "CurrentTimeService",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\D\\SliverKey\\Assignments\\7- Currenttimeservice\\CurrentTimeService\\wwwroot\\",
+      "BasePath": "_content/CurrentTimeService",
+      "RelativePath": "index.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    }
+  ]
+}

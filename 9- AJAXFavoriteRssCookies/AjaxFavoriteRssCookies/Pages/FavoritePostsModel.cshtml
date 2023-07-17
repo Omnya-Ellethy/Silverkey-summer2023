@@ -9,24 +9,25 @@
 <head>
     <title>@ViewData["Title"]</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" /> 
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
 </head>
 <style>
     body {
-    margin: 0;
-    padding-top: 60px; /* Adjust the value to accommodate the navbar height */
-    font-family: Arial, sans-serif;
-    padding-bottom: 60px;
+        margin: 0;
+        padding-top: 60px; /* Adjust the value to accommodate the navbar height */
+        font-family: Arial, sans-serif;
+        padding-bottom: 60px;
     }
+
     .footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: #f9f9f9;
-    padding: 10px;
-    text-align: center;
-    font-size: 14px;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #f9f9f9;
+        padding: 10px;
+        text-align: center;
+        font-size: 14px;
     }
 </style>
 <div class="wrapper">
@@ -35,7 +36,7 @@
             <h2 class="navbar-heading">Rss Feed Reader</h2>
             <div class="navbar-buttons">
                 <a href="/" class="navbar-button">Home</a>
-                <a href="/FavoritePostsModel" class="navbar-button">Starred</a>
+                <a href="/FavoritePosts" class="navbar-button">Starred</a>
             </div>
         </div>
     </div>
@@ -43,12 +44,12 @@
         @if (Model.StarredFeeds != null && Model.StarredFeeds.Count > 0)
         {
             <div class="feed-container">
-                @foreach (var item in Model.StarredFeeds)
+                @foreach (var feed in Model.StarredFeeds)
                 {
                     <div class="feed-item">
-                        <div class="feed-title">@item.Text</div>
+                        <div class="feed-title">@feed</div>
                         <div>
-                            <a class="feed-link" href="/XmlFeed?url=@item.XmlUrl">View</a>
+                            <a class="feed-link" href="/XmlFeedModel?url=@feed">View</a>
                         </div>
                     </div>
                 }
@@ -87,3 +88,4 @@
         </div>
     </div>
 </div>
+</html>

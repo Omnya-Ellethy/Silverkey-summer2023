@@ -1,0 +1,109 @@
+﻿@page
+@model AjaxFavoriteRssCookies.Pages.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />     
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head> 
+<body>
+    <div class="navbar">
+        <div class="container">
+            <h2 class="navbar-heading">Rss Feed Reader</h2>
+            <div class="navbar-buttons">
+                <a href="/" class="navbar-button">Home</a>
+                <a href="/FavoritePostsModel" class="navbar-button">Starred</a>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.ContentCollection != null && Model.ContentCollection.Count > 0)
+    {
+        <div class="feed-container">
+            @foreach (var item in Model.ContentCollection)
+            {
+                <div class="feed-item" data-feed-id="@item.Id">
+                    <div class="feed-title">@item.Text</div>
+                    <div class="feed-actions">
+                        <a class="feed-link" href="/XmlFeedModel?url=@item.XmlUrl">View</a>
+                        <form method="post" asp-page-handler="ToggleFavorite" class="d-inline">
+                            <input type="hidden" name="link" value="@item.XmlUrl" />
+                            <input type="hidden" name="pageNumber" value="@Model.CurrentPage" />
+                            <button type="submit" class="star-button @(item.IsFavorite ? "favorite" : "")"></button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="footer">
+            <nav>
+                <ul class="pagination">
+                    @if (Model.PageNumber > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?pageNumber=@(Model.PageNumber - 1)">&laquo;</a>
+                        </li>
+                    }
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                            <a class="page-link" href="?pageNumber=@i">@i</a>
+                        </li>
+                    }
+                    @if (Model.PageNumber < Model.TotalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?pageNumber=@(Model.PageNumber + 1)">&raquo;</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    }
+    else
+    {
+        <p>No OPML feed data available.</p>
+    }
+<script>
+    $(document).ready(function () {
+        $('.star-button').on('click', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var link = $(this).siblings('input[name="link"]').val();
+            var pageNumber = $(this).siblings('input[name="pageNumber"]').val();
+            var starButton = $(this); 
+
+            $.ajax({
+                url: '?handler=ToggleFavorite',
+                type: 'POST',
+                headers: {
+                    'RequestVerificationToken': $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                data: {
+                    link: link,
+                    pageNumber: pageNumber
+                },
+                success: function (response) {
+                    if (response.isFavorite) {
+                        starButton.addClass('favorite');
+                    } else {
+                        starButton.removeClass('favorite');
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while toggling favorite.');
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

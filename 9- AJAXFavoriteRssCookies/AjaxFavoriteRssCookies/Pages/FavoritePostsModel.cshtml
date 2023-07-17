@@ -1,0 +1,89 @@
+@page
+@model AjaxFavoriteRssCookies.Pages.FavoritePostsModel
+@{
+    ViewData["Title"] = "Starred Feeds";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" /> 
+</head>
+<style>
+    body {
+    margin: 0;
+    padding-top: 60px; /* Adjust the value to accommodate the navbar height */
+    font-family: Arial, sans-serif;
+    padding-bottom: 60px;
+    }
+    .footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #f9f9f9;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    }
+</style>
+<div class="wrapper">
+    <div class="navbar">
+        <div class="container">
+            <h2 class="navbar-heading">Rss Feed Reader</h2>
+            <div class="navbar-buttons">
+                <a href="/" class="navbar-button">Home</a>
+                <a href="/FavoritePostsModel" class="navbar-button">Starred</a>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        @if (Model.StarredFeeds != null && Model.StarredFeeds.Count > 0)
+        {
+            <div class="feed-container">
+                @foreach (var item in Model.StarredFeeds)
+                {
+                    <div class="feed-item">
+                        <div class="feed-title">@item.Text</div>
+                        <div>
+                            <a class="feed-link" href="/XmlFeed?url=@item.XmlUrl">View</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p>No starred feeds available.</p>
+        }
+
+        <div class="footer">
+            <nav>
+                <ul class="pagination">
+                    @if (Model.PageNumber > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?pageNumber=@(Model.PageNumber - 1)">&laquo;</a>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                            <a class="page-link" href="?pageNumber=@i">@i</a>
+                        </li>
+                    }
+
+                    @if (Model.PageNumber < Model.TotalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?pageNumber=@(Model.PageNumber + 1)">&raquo;</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

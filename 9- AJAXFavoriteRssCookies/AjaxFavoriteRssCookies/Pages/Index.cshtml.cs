@@ -1,10 +1,5 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
 using System.Xml.Linq;
 
 namespace AjaxFavoriteRssCookies.Pages
@@ -12,7 +7,9 @@ namespace AjaxFavoriteRssCookies.Pages
     public class IndexModel : PageModel
     {
         private readonly IHttpClientFactory _clientFactory;
-        public List<MainFeedItem> ContentCollection { get; set; } = new List<MainFeedItem>();
+        public List<MainFeedItem> ContentCollection { get; set; } = new ();
+        public List<MainFeedItem> StarredFeedsList { get; set; } = new();
+        public List<string> StarredFeeds { get; set; } = new();
         public int PageSize { get; set; } = 10;
         public int PageNumber { get; set; } = 1;
         public int TotalItems { get; set; }
@@ -33,8 +30,12 @@ namespace AjaxFavoriteRssCookies.Pages
             TotalPages = (int)Math.Ceiling((double)TotalItems / PageSize);
             CurrentPage = PageNumber;
 
-            // var starredFeedsJson = JsonSerializer.Serialize(ContentCollection);
-            // SetStarredFeedsInCookie(starredFeedsJson);
+            StarredFeeds = GetFavoriteFeedsFromCookie();
+
+            // Filter the ContentCollection based on the starred feeds
+            StarredFeedsList = ContentCollection
+                .Where(item => StarredFeeds.Contains(item.XmlUrl))
+                .ToList();
 
             ContentCollection = ContentCollection
                 .Skip((PageNumber - 1) * PageSize)
@@ -117,11 +118,6 @@ namespace AjaxFavoriteRssCookies.Pages
             var favoriteFeedsCookieValue = string.Join(',', favoriteFeeds);
             HttpContext.Response.Cookies.Append("FavoriteFeeds", favoriteFeedsCookieValue);
         }
-
-        // private void SetStarredFeedsInCookie(string starredFeedsJson)
-        // {
-        //     HttpContext.Response.Cookies.Append("starredFeeds", starredFeedsJson);
-        // }
     }
 
     public class MainFeedItem

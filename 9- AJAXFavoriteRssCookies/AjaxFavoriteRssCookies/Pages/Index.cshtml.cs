@@ -1,5 +1,10 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 using System.Xml.Linq;
 
 namespace AjaxFavoriteRssCookies.Pages
@@ -7,9 +12,10 @@ namespace AjaxFavoriteRssCookies.Pages
     public class IndexModel : PageModel
     {
         private readonly IHttpClientFactory _clientFactory;
-        public List<MainFeedItem> ContentCollection { get; set; } = new ();
-        public List<MainFeedItem> StarredFeedsList { get; set; } = new();
-        public List<string> StarredFeeds { get; set; } = new();
+        public List<MainFeedItem> ContentCollection { get; set; } = new List<MainFeedItem>();
+        public List<MainFeedItem> StarredFeedsList { get; set; } = new List<MainFeedItem>();
+        
+        public List<string> StarredFeeds { get; set; } = new List<string>();
         public int PageSize { get; set; } = 10;
         public int PageNumber { get; set; } = 1;
         public int TotalItems { get; set; }
@@ -20,6 +26,7 @@ namespace AjaxFavoriteRssCookies.Pages
         {
             _clientFactory = clientFactory;
         }
+        
         public async Task<IActionResult> OnGetAsync(int pageNumber = 1)
         {
             PageNumber = pageNumber;
@@ -35,6 +42,7 @@ namespace AjaxFavoriteRssCookies.Pages
             // Filter the ContentCollection based on the starred feeds
             StarredFeedsList = ContentCollection
                 .Where(item => StarredFeeds.Contains(item.XmlUrl))
+                .OrderBy(item => StarredFeeds.IndexOf(item.XmlUrl))
                 .ToList();
 
             ContentCollection = ContentCollection
@@ -45,29 +53,9 @@ namespace AjaxFavoriteRssCookies.Pages
             return Page();
         }
 
-        public IActionResult OnPostToggleFavorite(string link, int pageNumber)
-        {
-            var favoriteFeeds = GetFavoriteFeedsFromCookie();
-
-            if (favoriteFeeds.Contains(link))
-            {
-                favoriteFeeds.Remove(link);
-            }
-            else
-            {
-                favoriteFeeds.Add(link);
-            }
-
-            SetFavoriteFeedsInCookie(favoriteFeeds);
-
-            var isFavorite = favoriteFeeds.Contains(link);
-
-            return new JsonResult(new { IsFavorite = isFavorite });
-        }
-
         private async Task<string?> FetchMainFeedContent()
         {
-             var client = _clientFactory.CreateClient();
+            var client = _clientFactory.CreateClient();
             var response = await client.GetAsync("https://blue.feedland.org/opml?screenname=dave");
 
             if (response.IsSuccessStatusCode)

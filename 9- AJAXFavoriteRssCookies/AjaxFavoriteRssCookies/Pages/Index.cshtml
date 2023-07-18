@@ -33,10 +33,10 @@
                     <div class="feed-title">@item.Text</div>
                     <div class="feed-actions">
                         <a class="feed-link" href="/XmlFeedModel?url=@item.XmlUrl">View</a>
-                        <form method="post" asp-page-handler="ToggleFavorite" class="d-inline">
+                        <form class="d-inline">
                             <input type="hidden" name="link" value="@item.XmlUrl" />
                             <input type="hidden" name="pageNumber" value="@Model.CurrentPage" />
-                            <button type="submit" class="star-button @(item.IsFavorite ? "favorite" : "")"></button>
+                            <button type="button" class="star-button @(item.IsFavorite ? "favorite" : "")"></button>
                         </form>
                     </div>
                 </div>
@@ -80,26 +80,24 @@
             var pageNumber = $(this).siblings('input[name="pageNumber"]').val();
             var starButton = $(this); 
 
-            $.ajax({
-                url: '?handler=ToggleFavorite',
-                type: 'POST',
-                headers: {
-                    'RequestVerificationToken': $('input:hidden[name="__RequestVerificationToken"]').val()
-                },
-                data: {
-                    link: link,
-                    pageNumber: pageNumber
-                },
-                success: function (response) {
-                    if (response.isFavorite) {
-                        starButton.addClass('favorite');
-                    } else {
-                        starButton.removeClass('favorite');
-                    }
-                },
-                error: function () {
-                    alert('An error occurred while toggling favorite.');
+            var formData = new FormData();
+            formData.append('link', link);
+            formData.append('pageNumber', pageNumber);
+
+            fetch('/ToggleFavorite', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.isFavorite) {
+                    starButton.addClass('favorite');
+                } else {
+                    starButton.removeClass('favorite');
                 }
+            })
+            .catch(() => {
+                alert('An error occurred while toggling favorite.');
             });
         });
     });

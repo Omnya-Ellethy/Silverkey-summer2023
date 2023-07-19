@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Form</title>
+    <link rel="stylesheet" href="/styles.css">
+    <!-- <style>
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style> -->
+</head>
+<body>
+    <div id="navbar">
+        <h2 class="navbar-heading">Contact</h2>
+    </div>
+    <div class="container">
+        <form action="action_page.php" onsubmit="return validateForm()">
+      
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" name="firstname" placeholder="Your name.." required>
+            <div class="error-message" id="fnameError"></div>
+      
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" name="lastname" placeholder="Your last name.." required>
+            <div class="error-message" id="lnameError"></div>
+      
+            <label for="email">Email</label><br>
+            <input type="email" id="email" name="email" placeholder="Your email.." required>
+            <div class="error-message" id="emailError"></div><br>
+
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" placeholder="Your personal title.." required>
+            <div class="error-message" id="titleError"></div>
+
+            <label for="birthdate">Date of Birth</label><br>
+            <input type="date" id="birthdate" name="birthdate" required>
+            <div class="error-message" id="birthdateError"></div><br>
+
+            <label for="marriagestatus">Marriage Status</label>
+            <select id="marriagestatus" name="marriagestatus" required>
+                <option value="">Select an option</option>
+                <option value="single">Single</option>
+                <option value="married">Married</option>
+                <option value="widowed">Widowed</option>
+                <option value="divorced">Divorced</option>
+            </select>
+            <div class="error-message" id="marriagestatusError"></div>
+      
+            <label for="description">Description</label>
+            <textarea type="text" id="description" name="description" placeholder="Enter description.." style="height:200px" required></textarea>
+            <div class="error-message" id="descriptionError"></div>
+          
+            <input type="submit" value="Submit">
+      
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            // Reset error messages
+            const errorMessages = document.querySelectorAll('.error-message');
+            errorMessages.forEach((errorMessage) => {
+                errorMessage.textContent = '';
+            });
+
+            // Validate input fields
+            let isValid = true;
+
+            const firstName = document.getElementById('fname').value;
+            const lastName = document.getElementById('lname').value;
+            const email = document.getElementById('email').value;
+            const title = document.getElementById('title').value;
+            const birthdate = document.getElementById('birthdate').value;
+            const marriagestatus = document.getElementById('marriagestatus').value;
+            const description = document.getElementById('description').value;
+
+            if (!/^[A-Za-z]+$/.test(firstName)) {
+                document.getElementById('fnameError').textContent = '*First name should contain only letters.';
+                isValid = false;
+            }
+
+            if (!/^[A-Za-z]+$/.test(lastName)) {
+                document.getElementById('lnameError').textContent = '*Last name should contain only letters.';
+                isValid = false;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('emailError').textContent = '*Invalid email address.';
+                isValid = false;
+            }
+
+            if (!/^[A-Za-z]+$/.test(title)) {
+                document.getElementById('titleError').textContent = '*Title should contain only letters.';
+                isValid = false;
+            }
+
+            // Birthdate validation (can be customized as needed)
+            if (!birthdate) {
+                document.getElementById('birthdateError').textContent = '*Birthdate is required.';
+                isValid = false;
+            }
+
+            if (!marriagestatus) {
+                document.getElementById('marriagestatusError').textContent = '*Marriage status is required.';
+                isValid = false;
+            }
+
+            if (!description) {
+                document.getElementById('descriptionError').textContent = '*Description is required.';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+    </script>
+</body>
+</html>

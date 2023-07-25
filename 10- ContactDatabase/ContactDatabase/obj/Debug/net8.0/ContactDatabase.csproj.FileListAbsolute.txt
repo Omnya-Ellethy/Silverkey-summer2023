@@ -6,6 +6,8 @@ C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\bin\Debug\net8.0\
 C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\bin\Debug\net8.0\ContactDatabase.runtimeconfig.json
 C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\bin\Debug\net8.0\ContactDatabase.dll
 C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\bin\Debug\net8.0\ContactDatabase.pdb
+C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\bin\Debug\net8.0\EdgeDB.Net.Driver.dll
+C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\obj\Debug\net8.0\ContactDatabase.csproj.AssemblyReference.cache
 C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\obj\Debug\net8.0\ContactDatabase.GeneratedMSBuildEditorConfig.editorconfig
 C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\obj\Debug\net8.0\ContactDatabase.AssemblyInfoInputs.cache
@@ -21,6 +23,7 @@ C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\obj\Debug\net8.0\
 C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\obj\Debug\net8.0\staticwebassets.build.json
 C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\obj\Debug\net8.0\staticwebassets.development.json
 C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\obj\Debug\net8.0\scopedcss\bundle\ContactDatabase.styles.css
+C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\obj\Debug\net8.0\ContactDatabase.csproj.CopyComplete
 C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\obj\Debug\net8.0\ContactDatabase.dll
 C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\obj\Debug\net8.0\refint\ContactDatabase.dll
 C:\D\SliverKey\Assignments\10- ContactDatabase\ContactDatabase\obj\Debug\net8.0\ContactDatabase.pdb

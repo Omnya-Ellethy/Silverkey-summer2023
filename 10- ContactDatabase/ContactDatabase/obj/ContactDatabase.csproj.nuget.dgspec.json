@@ -20,7 +20,8 @@
           "net8.0"
         ],
         "sources": {
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.edgedb.com/dist": {}
         },
         "frameworks": {
           "net8.0": {
@@ -37,6 +38,12 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "EdgeDB.Net.Driver": {
+              "target": "Package",
+              "version": "[1.2.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

@@ -1,6 +1,14 @@
 {
   "Files": [
     {
+      "Id": "C:\\D\\SliverKey\\Assignments\\10- ContactDatabase\\ContactDatabase\\wwwroot\\contactlist.css",
+      "PackagePath": "staticwebassets\\contactlist.css"
+    },
+    {
+      "Id": "C:\\D\\SliverKey\\Assignments\\10- ContactDatabase\\ContactDatabase\\wwwroot\\contactlist.html",
+      "PackagePath": "staticwebassets\\contactlist.html"
+    },
+    {
       "Id": "C:\\D\\SliverKey\\Assignments\\10- ContactDatabase\\ContactDatabase\\wwwroot\\index.html",
       "PackagePath": "staticwebassets\\index.html"
     },

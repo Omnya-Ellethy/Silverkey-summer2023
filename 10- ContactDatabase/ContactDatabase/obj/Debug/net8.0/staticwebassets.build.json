@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "VmGNGKSKCerbQ55iTQTbOOdotme2W3CwPtjFbmEUGOs=",
+  "Hash": "yiC3+i9yVhX8xxVVDaHmwZQ8HujCTN7QSCD60KhFQxQ=",
   "Source": "ContactDatabase",
   "BasePath": "_content/ContactDatabase",
   "Mode": "Default",
@@ -16,6 +16,40 @@
     }
   ],
   "Assets": [
+    {
+      "Identity": "C:\\D\\SliverKey\\Assignments\\10- ContactDatabase\\ContactDatabase\\wwwroot\\contactlist.css",
+      "SourceId": "ContactDatabase",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\D\\SliverKey\\Assignments\\10- ContactDatabase\\ContactDatabase\\wwwroot\\",
+      "BasePath": "_content/ContactDatabase",
+      "RelativePath": "contactlist.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\contactlist.css"
+    },
+    {
+      "Identity": "C:\\D\\SliverKey\\Assignments\\10- ContactDatabase\\ContactDatabase\\wwwroot\\contactlist.html",
+      "SourceId": "ContactDatabase",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\D\\SliverKey\\Assignments\\10- ContactDatabase\\ContactDatabase\\wwwroot\\",
+      "BasePath": "_content/ContactDatabase",
+      "RelativePath": "contactlist.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\contactlist.html"
+    },
     {
       "Identity": "C:\\D\\SliverKey\\Assignments\\10- ContactDatabase\\ContactDatabase\\wwwroot\\index.html",
       "SourceId": "ContactDatabase",

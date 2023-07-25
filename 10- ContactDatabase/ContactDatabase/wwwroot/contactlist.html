@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact List</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/contactlist.css"> 
+</head>
+<body>
+    <div id="navbar">
+        <h2 class="navbar-heading">Contact List</h2>
+        <a href="/">Home</a>
+    </div>
+    <div class="container">
+        <input type="text" id="myInput" onkeyup="filterContacts()" placeholder="Search by first name, last name, or email..">
+        <table id="myTable">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function filterContacts() {
+            var input, filter, table, tbody, rows, cell, i, j, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toLowerCase();
+            table = document.getElementById("myTable");
+            tbody = table.getElementsByTagName("tbody")[0];
+            rows = tbody.getElementsByTagName("tr");
+
+            for (i = 0; i < rows.length; i++) {
+                var display = "none";
+                for (j = 0; j < rows[i].cells.length; j++) {
+                    cell = rows[i].cells[j];
+                    if (cell) {
+                        txtValue = cell.textContent || cell.innerText;
+                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                            display = "";
+                            break;
+                        }
+                    }
+                }
+                rows[i].style.display = display;
+            }
+        }
+
+        async function fetchContacts() {
+            try {
+                const response = await fetch("/api/contacts");
+                if (response.ok) {
+                    const contacts = await response.json();
+                    displayContacts(contacts);
+                } else {
+                    console.error("Failed to fetch contacts:", response);
+                }
+            } catch (error) {
+                console.error("Error fetching contacts:", error);
+            }
+        }
+
+        function displayContacts(contacts) {
+            const contactTable = document.getElementById("myTable");
+            const tbody = contactTable.getElementsByTagName("tbody")[0];
+            tbody.innerHTML = ""; // Clear existing data
+
+            contacts.forEach((contact) => {
+                const row = tbody.insertRow();
+                row.innerHTML = `<td>${contact.first_name}</td><td>${contact.last_name}</td><td>${contact.email}</td>`;
+            });
+        }
+
+        fetchContacts();
+    </script>
+</body>
+</html>

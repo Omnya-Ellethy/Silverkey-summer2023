@@ -3,29 +3,22 @@
 <head>
     <title>Contact Form</title>
     <link rel="stylesheet" href="/styles.css">
-    <!-- <style>
-        .error-message {
-            color: red;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-    </style> -->
 </head>
 <body>
     <div id="navbar">
         <h2 class="navbar-heading">Contact</h2>
+        <a href="/contactlist.html">Contact List</a>
     </div>
     <div class="container">
-        <form action="action_page.php" onsubmit="return validateForm()">
-      
+        <form id="contactForm" method="post">
             <label for="fname">First Name</label>
             <input type="text" id="fname" name="firstname" placeholder="Your name.." required>
             <div class="error-message" id="fnameError"></div>
-      
+
             <label for="lname">Last Name</label>
             <input type="text" id="lname" name="lastname" placeholder="Your last name.." required>
             <div class="error-message" id="lnameError"></div>
-      
+
             <label for="email">Email</label><br>
             <input type="email" id="email" name="email" placeholder="Your email.." required>
             <div class="error-message" id="emailError"></div><br>
@@ -41,23 +34,52 @@
             <label for="marriagestatus">Marriage Status</label>
             <select id="marriagestatus" name="marriagestatus" required>
                 <option value="">Select an option</option>
-                <option value="single">Single</option>
-                <option value="married">Married</option>
-                <option value="widowed">Widowed</option>
-                <option value="divorced">Divorced</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
             </select>
             <div class="error-message" id="marriagestatusError"></div>
-      
+            
+
             <label for="description">Description</label>
             <textarea type="text" id="description" name="description" placeholder="Enter description.." style="height:200px" required></textarea>
             <div class="error-message" id="descriptionError"></div>
-          
-            <input type="submit" value="Submit">
-      
+
+            <input type="submit" value="Submit" onclick="submitForm(event)">
         </form>
     </div>
 
     <script>
+        function submitForm(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            if (!validateForm()) {
+                return; // Don't submit the form if validation fails
+            }
+
+            const form = document.getElementById('contactForm'); // Get the form element
+            const formData = new FormData(form); // Create FormData object to send the form data
+
+            // Send the form data using AJAX
+            fetch('/submit', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Data submitted successfully, show a success message
+                    console.log('Data submitted successfully.');
+                    form.reset(); // Optionally, reset the form after successful submission
+                } else {
+                    // Handle server-side errors or show an error message to the user
+                    console.error('Error submitting data:', response);
+                }
+            })
+            .catch(error => {
+                // Handle network errors or other exceptions
+                console.error('Error submitting data:', error);
+            });
+        }
+
         function validateForm() {
             // Reset error messages
             const errorMessages = document.querySelectorAll('.error-message');
@@ -76,22 +98,26 @@
             const marriagestatus = document.getElementById('marriagestatus').value;
             const description = document.getElementById('description').value;
 
-            if (!/^[A-Za-z]+$/.test(firstName)) {
+            // Updated regular expressions to allow spaces in input fields
+            const nameRegex = /^[A-Za-z\s]+$/; // Allows letters and spaces
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Allows valid email format
+
+            if (!nameRegex.test(firstName)) {
                 document.getElementById('fnameError').textContent = '*First name should contain only letters.';
                 isValid = false;
             }
 
-            if (!/^[A-Za-z]+$/.test(lastName)) {
+            if (!nameRegex.test(lastName)) {
                 document.getElementById('lnameError').textContent = '*Last name should contain only letters.';
                 isValid = false;
             }
 
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            if (!emailRegex.test(email)) {
                 document.getElementById('emailError').textContent = '*Invalid email address.';
                 isValid = false;
             }
 
-            if (!/^[A-Za-z]+$/.test(title)) {
+            if (!nameRegex.test(title)) {
                 document.getElementById('titleError').textContent = '*Title should contain only letters.';
                 isValid = false;
             }

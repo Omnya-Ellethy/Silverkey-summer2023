@@ -1,0 +1,211 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Contact</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/contactlist.css"> 
+</head>
+<body>
+    <div id="navbar">
+        <h2 class="navbar-heading">Edit Contact</h2>
+        <a href="/contactlist">Back to Contact List</a>
+    </div>
+    <div class="container">
+        <form onsubmit="updateContact(event)">
+            <h2>Edit Contact</h2>
+            <form onsubmit="updateContact(event, '${contact.id}')">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" value="${contact.username}" required>
+                <br>
+    
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" value="${contact.firstName}" required">
+                <br>
+    
+                <label for="lname">Last Name</label>
+                <input type="text" id="lname" name="lastname" value="${contact.lastName}" required>
+                <br>
+    
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="${contact.email}" required>
+                <br>
+    
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" value="${contact.title}" required>
+                <br>
+    
+                <label for="birthdate">Date of Birth</label>
+                <input type="date" id="birthdate" name="birthdate" value="${contact.dateOfBirth}" required>
+                <br>
+    
+                <label for="marriagestatus">Marriage Status</label>
+                <select id="marriagestatus" name="marriagestatus" required>
+                    <option value="">Select an option</option>
+                    <option value="yes" ${contact.marriageStatus ? 'selected' : ''}>Yes</option>
+                    <option value="no" ${!contact.marriageStatus ? 'selected' : ''}>No</option>
+                </select>
+                <br>
+    
+                <label for="role">Role</label><br>
+                <input type="radio" id="admin" name="role" value="Admin" ${contact.role === 'Admin' ? 'checked' : ''} required>
+                <label for="admin">Admin</label><br>
+                <input type="radio" id="normal" name="role" value="User" ${contact.role === 'User' ? 'checked' : ''} required>
+                <label for="normal">User</label>
+                <br>
+    
+                <label for="description">Description</label>
+                <textarea type="text" id="description" name="description" style="height:200px" required>${contact.description || ''}</textarea>
+                <br>
+    
+                <input type="submit" value="Update">
+            </form>
+            <input type="submit" value="Update">
+        </form>
+    </div>
+    <script>
+        async function updateContact(event) {
+            event.preventDefault();
+            const contactId = getContactIdFromQueryString();
+            // Gather updated contact data from the form
+            const updatedContact = {
+                username: document.getElementById("username").value,
+                firstName: document.getElementById("firstName").value,
+                lastName: document.getElementById("lname").value,
+                email: document.getElementById("email").value,
+                title: document.getElementById("title").value,
+                description: document.getElementById("description").value,
+                dateOfBirth: document.getElementById("birthdate").value,
+                marriageStatus: document.getElementById("marriagestatus").value === "yes",
+                role: document.querySelector('input[name="role"]:checked').value
+            };
+
+            try {
+                const response = await fetch(`/api/contacts/${contactId}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(updatedContact),
+                });
+
+                if (response.ok) {
+                    // Redirect to the contact list page after successful update
+                    window.location.href = "/contactlist";
+                } else {
+                    console.error("Failed to update contact:", response);
+                }
+            } catch (error) {
+                console.error("Error updating contact:", error);
+            }
+        }
+
+        function getContactIdFromQueryString() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get("id");
+        }
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Contact</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div id="navbar">
+        <h2 class="navbar-heading">Edit Contact</h2>
+        <a href="/">Home</a>
+    </div>
+    <div class="container">
+        <h2>Edit Contact</h2>
+        <form id="editForm" onsubmit="updateContact(event)">
+            <input type="hidden" id="contactId" name="contactId" value="">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" required>
+            <br>
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" required>
+            <br>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+            <br>
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title">
+            <br>
+            <label for="description">Description</label>
+            <textarea id="description" name="description"></textarea>
+            <br>
+            <label for="dateOfBirth">Date of Birth</label>
+            <input type="date" id="dateOfBirth" name="dateOfBirth">
+            <br>
+            <label for="marriageStatus">Marriage Status</label>
+            <input type="checkbox" id="marriageStatus" name="marriageStatus">
+            <br>
+            <input type="submit" value="Update">
+        </form>
+    </div>
+    <script>
+        async function fetchContact(contactId) {
+            try {
+                const response = await fetch(`/edit?id=${contactId}`);
+                if (response.ok) {
+                    const contact = await response.json();
+                    populateFormFields(contact);
+                } else {
+                    console.error("Failed to fetch contact for editing:", response);
+                }
+            } catch (error) {
+                console.error("Error fetching contact for editing:", error);
+            }
+        }
+
+        function populateFormFields(contact) {
+            document.getElementById("contactId").value = contact.id;
+            document.getElementById("firstName").value = contact.firstName;
+            document.getElementById("lastName").value = contact.lastName;
+            document.getElementById("email").value = contact.email;
+            document.getElementById("title").value = contact.title || "";
+            document.getElementById("description").value = contact.description || "";
+            document.getElementById("dateOfBirth").value = contact.dateOfBirth || "";
+            document.getElementById("marriageStatus").checked = contact.marriageStatus || false;
+        }
+
+        async function updateContact(event) {
+            event.preventDefault();
+
+            const form = document.getElementById("editForm");
+            const formData = new FormData(form);
+
+            const response = await fetch(`/api/contacts/${formData.get("contactId")}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(Object.fromEntries(formData)),
+            });
+
+            if (response.ok) {
+                console.log("Contact updated successfully");
+                // Redirect or display a success message
+            } else {
+                console.error("Failed to update contact:", response);
+                // Display an error message
+            }
+        }
+
+        // Fetch contact details for editing
+        const urlParams = new URLSearchParams(window.location.search);
+        const contactId = urlParams.get("id");
+        if (contactId) {
+            fetchContact(contactId);
+        }
+    </script>
+</body>
+</html> -->

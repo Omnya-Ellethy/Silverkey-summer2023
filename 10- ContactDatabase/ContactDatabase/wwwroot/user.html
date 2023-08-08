@@ -3,12 +3,13 @@
 <head>
     <title>Contact List</title>
     <link rel="stylesheet" href="/styles.css">
-    <link rel="stylesheet" href="/contactlist.css"> 
+    <link rel="stylesheet" href="/Admin.css"> 
 </head>
 <body>
     <div id="navbar">
         <h2 class="navbar-heading">Contact List</h2>
         <a href="/">Home</a>
+        <button class="logout-button" onclick="logout()">Logout</button>
     </div>
     <div class="container">
         <input type="text" id="myInput" onkeyup="filterContacts()" placeholder="Search by first name, last name, or email..">
@@ -18,6 +19,9 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
+                    <th>Title</th>
+                    <th>Birth Date</th>
+                    <th>Married</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,10 +71,36 @@
             const contactTable = document.getElementById("myTable");
             const tbody = contactTable.getElementsByTagName("tbody")[0];
             tbody.innerHTML = ""; // Clear existing data
-
+    
             contacts.forEach((contact) => {
+                // Format date of birth in yy-mm-dd format
+                const dateOfBirth = new Date(contact.dateOfBirth).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit"
+                });
+        
                 const row = tbody.insertRow();
-                row.innerHTML = `<td>${contact.first_name}</td><td>${contact.last_name}</td><td>${contact.email}</td>`;
+                row.innerHTML = `<td>${contact.firstName}</td><td>${contact.lastName}</td><td>${contact.email}</td><td>${contact.title}</td><td>${dateOfBirth}</td><td>${contact.marriageStatus}</td>`;
+            });
+        }
+
+        function logout() {
+            fetch('/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/index.html';
+                } else {
+                    console.error('Failed to logout');
+                }
+            })
+            .catch(error => {
+                console.error('Error during logout:', error);
             });
         }
 

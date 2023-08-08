@@ -1,144 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Contact Form</title>
+    <title>Login</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <div id="navbar">
         <h2 class="navbar-heading">Contact</h2>
-        <a href="/contactlist.html">Contact List</a>
     </div>
     <div class="container">
-        <form id="contactForm" method="post">
-            <label for="fname">First Name</label>
-            <input type="text" id="fname" name="firstname" placeholder="Your name.." required>
-            <div class="error-message" id="fnameError"></div>
-
-            <label for="lname">Last Name</label>
-            <input type="text" id="lname" name="lastname" placeholder="Your last name.." required>
-            <div class="error-message" id="lnameError"></div>
-
-            <label for="email">Email</label><br>
-            <input type="email" id="email" name="email" placeholder="Your email.." required>
-            <div class="error-message" id="emailError"></div><br>
-
-            <label for="title">Title</label>
-            <input type="text" id="title" name="title" placeholder="Your personal title.." required>
-            <div class="error-message" id="titleError"></div>
-
-            <label for="birthdate">Date of Birth</label><br>
-            <input type="date" id="birthdate" name="birthdate" required>
-            <div class="error-message" id="birthdateError"></div><br>
-
-            <label for="marriagestatus">Marriage Status</label>
-            <select id="marriagestatus" name="marriagestatus" required>
-                <option value="">Select an option</option>
-                <option value="no">No</option>
-                <option value="yes">Yes</option>
-            </select>
-            <div class="error-message" id="marriagestatusError"></div>
-            
-
-            <label for="description">Description</label>
-            <textarea type="text" id="description" name="description" placeholder="Enter description.." style="height:200px" required></textarea>
-            <div class="error-message" id="descriptionError"></div>
-
-            <input type="submit" value="Submit" onclick="submitForm(event)">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Your username.." required>
+            <div id="usernameError" class="error-message"></div> <!-- Error message for username -->
+            <br>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Your password.." required>
+            <div id="passwordError" class="error-message"></div> <!-- Error message for password -->
+            <br>
+            <br>
+            <input type="submit" value="Login" onclick="login(event)">
         </form>
     </div>
 
     <script>
-        function submitForm(event) {
+        async function login(event) {
             event.preventDefault(); // Prevent the default form submission behavior
+    
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
-            if (!validateForm()) {
-                return; // Don't submit the form if validation fails
+            document.getElementById('usernameError').textContent = '';
+            document.getElementById('passwordError').textContent = '';
+
+            // Basic validation for non-empty username and password
+            if (!username) {
+                document.getElementById('usernameError').textContent = '*Enter your Username';
+                return;
             }
-
-            const form = document.getElementById('contactForm'); // Get the form element
-            const formData = new FormData(form); // Create FormData object to send the form data
-
-            // Send the form data using AJAX
-            fetch('/submit', {
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => {
+            if (!password) {
+                document.getElementById('passwordError').textContent = '*Enter your Password';
+                return;
+            }
+    
+            const formData = new FormData();
+            formData.append('username', username);
+            formData.append('password', password);
+    
+            try {
+                const response = await fetch("/login", {
+                    method: 'POST',
+                    body: formData
+                });
                 if (response.ok) {
-                    // Data submitted successfully, show a success message
-                    console.log('Data submitted successfully.');
-                    form.reset(); // Optionally, reset the form after successful submission
+                    const user = await response.json();
+                    if (user.role === "User") {
+                        window.location.href = '/user.html';
+                    } else if (user.role === "Admin") {
+                        window.location.href = '/Admin.html';
+                    } else {
+                        console.log('Invalid user role.');
+                    }
                 } else {
-                    // Handle server-side errors or show an error message to the user
-                    console.error('Error submitting data:', response);
+                    console.log('Invalid credentials. Please try again.');
                 }
-            })
-            .catch(error => {
-                // Handle network errors or other exceptions
-                console.error('Error submitting data:', error);
-            });
-        }
-
-        function validateForm() {
-            // Reset error messages
-            const errorMessages = document.querySelectorAll('.error-message');
-            errorMessages.forEach((errorMessage) => {
-                errorMessage.textContent = '';
-            });
-
-            // Validate input fields
-            let isValid = true;
-
-            const firstName = document.getElementById('fname').value;
-            const lastName = document.getElementById('lname').value;
-            const email = document.getElementById('email').value;
-            const title = document.getElementById('title').value;
-            const birthdate = document.getElementById('birthdate').value;
-            const marriagestatus = document.getElementById('marriagestatus').value;
-            const description = document.getElementById('description').value;
-
-            // Updated regular expressions to allow spaces in input fields
-            const nameRegex = /^[A-Za-z\s]+$/; // Allows letters and spaces
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Allows valid email format
-
-            if (!nameRegex.test(firstName)) {
-                document.getElementById('fnameError').textContent = '*First name should contain only letters.';
-                isValid = false;
+            } catch (error) {
+                console.error('Error during login:', error);
             }
-
-            if (!nameRegex.test(lastName)) {
-                document.getElementById('lnameError').textContent = '*Last name should contain only letters.';
-                isValid = false;
-            }
-
-            if (!emailRegex.test(email)) {
-                document.getElementById('emailError').textContent = '*Invalid email address.';
-                isValid = false;
-            }
-
-            if (!nameRegex.test(title)) {
-                document.getElementById('titleError').textContent = '*Title should contain only letters.';
-                isValid = false;
-            }
-
-            // Birthdate validation (can be customized as needed)
-            if (!birthdate) {
-                document.getElementById('birthdateError').textContent = '*Birthdate is required.';
-                isValid = false;
-            }
-
-            if (!marriagestatus) {
-                document.getElementById('marriagestatusError').textContent = '*Marriage status is required.';
-                isValid = false;
-            }
-
-            if (!description) {
-                document.getElementById('descriptionError').textContent = '*Description is required.';
-                isValid = false;
-            }
-
-            return isValid;
         }
     </script>
 </body>

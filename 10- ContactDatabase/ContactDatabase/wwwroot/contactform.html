@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Form</title>
+    <link rel="stylesheet" href="/contactform.css">
+</head>
+<body>
+    <div id="navbar">
+        <h2 class="navbar-heading">Contact</h2>
+        <a href="/Admin.html">Contact List</a>
+    </div>
+    <div class="container">
+        <form id="contactForm" method="post">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Your username.." required>
+            <div class="error-message" id="usernameError"></div>
+
+            <label for="password">Password</label><br>
+            <input type="password" id="password" name="password" placeholder="Your password.." required>
+            <div class="error-message" id="passwordError"></div>
+
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" name="firstname" placeholder="Your name.." required>
+            <div class="error-message" id="fnameError"></div>
+
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" name="lastname" placeholder="Your last name.." required>
+            <div class="error-message" id="lnameError"></div>
+
+            <label for="email">Email</label><br>
+            <input type="email" id="email" name="email" placeholder="Your email.." required>
+            <div class="error-message" id="emailError"></div><br>
+
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" placeholder="Your personal title.." required>
+            <div class="error-message" id="titleError"></div>
+
+            <label for="birthdate">Date of Birth</label><br>
+            <input type="date" id="birthdate" name="birthdate" required>
+            <div class="error-message" id="birthdateError"></div><br>
+
+            <label for="marriagestatus">Marriage Status</label>
+            <select id="marriagestatus" name="marriagestatus" required>
+                <option value="">Select an option</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select>
+            <div class="error-message" id="marriagestatusError"></div>
+
+            <label for="role">Role</label><br>
+            <input type="radio" id="admin" name="role" value="Admin" required>
+            <label for="admin">Admin</label><br>
+            <input type="radio" id="normal" name="role" value="User" required>
+            <label for="normal">User</label>
+            <div class="error-message" id="usertypeError"></div>
+
+            <label for="description">Description</label>
+            <textarea type="text" id="description" name="description" placeholder="Enter description.." style="height:200px" required></textarea>
+            <div class="error-message" id="descriptionError"></div>
+
+            <input type="submit" value="Submit" onclick="submitForm(event)">
+            
+        </form>
+    </div>
+
+    <script>
+        function submitForm(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            if (!validateForm()) {
+                return; // Don't submit the form if validation fails
+            }
+
+            const form = document.getElementById('contactForm'); // Get the form element
+            const formData = new FormData(form); // Create FormData object to send the form data
+
+            // Send the form data using AJAX
+            fetch('/submit', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/Admin.html';
+                } else {
+                    console.error('Error submitting data:', response);
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting data:', error);
+            });
+        }
+
+        function validateForm() {
+            // Reset error messages
+            const errorMessages = document.querySelectorAll('.error-message');
+            errorMessages.forEach((errorMessage) => {
+                errorMessage.textContent = '';
+            });
+
+            // Validate input fields
+            let isValid = true;
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const firstName = document.getElementById('fname').value;
+            const lastName = document.getElementById('lname').value;
+            const email = document.getElementById('email').value;
+            const title = document.getElementById('title').value;
+            const birthdate = document.getElementById('birthdate').value;
+            const marriagestatus = document.getElementById('marriagestatus').value;
+            const description = document.getElementById('description').value;
+            const userTypeAdmin = document.getElementById('admin').checked;
+            const userTypeNormal = document.getElementById('normal').checked;
+
+            // Updated regular expressions to allow spaces in input fields
+            const nameRegex = /^[A-Za-z\s]+$/; // Allows letters and spaces
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Allows valid email format
+
+            if (!username) {
+                document.getElementById('usernameError').textContent = '*Username is required.';
+                isValid = false;
+            }
+
+            if (!password) {
+                document.getElementById('passwordError').textContent = '*Password is required.';
+                isValid = false;
+            }
+
+            if (!nameRegex.test(firstName)) {
+                document.getElementById('fnameError').textContent = '*First name should contain only letters.';
+                isValid = false;
+            }
+
+            if (!nameRegex.test(lastName)) {
+                document.getElementById('lnameError').textContent = '*Last name should contain only letters.';
+                isValid = false;
+            }
+
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').textContent = '*Invalid email address.';
+                isValid = false;
+            }
+
+            if (!nameRegex.test(title)) {
+                document.getElementById('titleError').textContent = '*Title should contain only letters.';
+                isValid = false;
+            }
+
+            if (!birthdate) {
+                document.getElementById('birthdateError').textContent = '*Birthdate is required.';
+                isValid = false;
+            }
+
+            if (!marriagestatus) {
+                document.getElementById('marriagestatusError').textContent = '*Marriage status is required.';
+                isValid = false;
+            }
+
+            if (!description) {
+                document.getElementById('descriptionError').textContent = '*Description is required.';
+                isValid = false;
+            }
+            if (!userTypeAdmin && !userTypeNormal) {
+                document.getElementById('usertypeError').textContent = '*Please select a user type (Admin/Normal User).';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+    </script>
+</body>
+</html> 
+
+
